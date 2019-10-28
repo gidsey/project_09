@@ -7,6 +7,7 @@ Refractor and improve efficency of an existing Django project.
 ## Changes made to Models:
 
 #### Menu
+`null=True` removed from 'expiration_date' field
 default added to 'expiration_date' field to prevent None type results.
 
 #### Item
