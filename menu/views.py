@@ -2,31 +2,36 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.http import Http404
 from django.utils import timezone
 from operator import attrgetter
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
 from .forms import *
 
 
 def menu_list(request):
-    all_menus = Menu.objects.all().prefetch_related('items')
-    menus = []
-    for menu in all_menus:
-        if menu.expiration_date >= timezone.now():
-            menus.append(menu)
+    plus_2_years = timezone.now() + timedelta(days=730)
+    now = timezone.now()
+    menus = Menu.objects.all().prefetch_related(
+        'items'
+        ).filter(expiration_date__gte=now).order_by('-expiration_date')
+    # menus = []
+    #
+    # for menu in all_menus:
+    #     if menu.expiration_date >= plus_2_years:
+    #         menus.append(menu)
 
-    menus = sorted(menus, key=attrgetter('expiration_date'))
+    # menus = sorted(menus, key=attrgetter('expiration_date'))
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 
 def menu_detail(request, pk):
-    menu = Menu.objects.get(pk=pk)
+    menu = Menu.objects.prefetch_related('items').get(pk=pk)
     return render(request, 'menu/menu_detail.html', {'menu': menu})
 
 
 def item_detail(request, pk):
-    try: 
-        item = Item.objects.get(pk=pk)
+    try:
+        item = Item.objects.prefetch_related('chef').get(pk=pk)
     except ObjectDoesNotExist:
         raise Http404
     return render(request, 'menu/detail_item.html', {'item': item})
@@ -48,6 +53,7 @@ def create_new_menu(request):
 def edit_menu(request, pk):
     menu = get_object_or_404(Menu, pk=pk)
     items = Item.objects.all()
+
     if request.method == "POST":
         menu.season = request.POST.get('season', '')
         menu.expiration_date = datetime.strptime(request.POST.get('expiration_date', ''), '%m/%d/%Y')
