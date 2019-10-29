@@ -18,7 +18,7 @@ add `unique=True` to name
 
 ## Atributions
 
-Icons: soda by Ben Davis from the Noun Project
+Icons: soda by Ben Davis from the [Noun Project](https://thenounproject.com)
 
 Project work by [Chris Guy](https://www.linkedin.com/in/gidsey/), October 2019
 
