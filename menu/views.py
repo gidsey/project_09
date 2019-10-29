@@ -29,6 +29,10 @@ def item_detail(request, pk):
     return render(request, 'menu/detail_item.html', {'item': item})
 
 
+def edit_item(request, pk):
+    pass
+
+
 def create_new_menu(request):
     if request.method == "POST":
         form = MenuForm(request.POST)
