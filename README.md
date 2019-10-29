@@ -16,6 +16,10 @@ default added to 'expiration_date' field to prevent None type results.
 ##### Ingredient
 add `unique=True` to name
 
+## Atributions
 
+Icons: soda by Ben Davis from the Noun Project
+
+Project work by [Chris Guy](https://www.linkedin.com/in/gidsey/), October 2019
 
 
