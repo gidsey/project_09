@@ -8,6 +8,7 @@ Refractor and improve efficency of an existing Django project.
 
 #### Menu
 default added to 'expiration_date' field to prevent None type results.
+
 'expiration_date' changed from `DateTimeField` to `DateField`
 
 #### Item
