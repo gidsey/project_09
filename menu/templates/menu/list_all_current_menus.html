@@ -14,9 +14,9 @@
                 </h1>
                 <p>{{ menu.items.all|join:", " }}</p>
                 <div class="post">
-                {% if menu.expiration_date %}
+                {% if menu.expiration_date_2 %}
                     <div class="date">
-                        Expires on: {{ menu.expiration_date }}
+                        Expires on: {{ menu.expiration_date_2 }}
                     </div>
                 {% endif %}
             {% endfor %}
