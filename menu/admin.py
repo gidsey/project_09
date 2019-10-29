@@ -5,7 +5,7 @@ admin.site.site_header = 'Soda Fountian Admin Aresa'
 
 
 class MenuAdmin(admin.ModelAdmin):
-    list_display = ['season', 'created_date', 'expiration_date_2']
+    list_display = ['season', 'created_date', 'expiration_date']
 
 
 class ItemAdmin(admin.ModelAdmin):

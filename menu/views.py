@@ -12,7 +12,7 @@ def menu_list(request):
     now = timezone.now()
     menus = Menu.objects.all().prefetch_related(
         'items'
-        ).filter(expiration_date_2__gte=now).order_by('-expiration_date_2')
+        ).filter(expiration_date__gte=now).order_by('-expiration_date')
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 
@@ -48,7 +48,7 @@ def edit_menu(request, pk):
 
     if request.method == "POST":
         menu.season = request.POST.get('season', '')
-        menu.expiration_date_2 = datetime.strptime(request.POST.get('expiration_date_2', ''), '%m/%d/%Y')
+        menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
         menu.items = request.POST.get('items', '')
         menu.save()
 
