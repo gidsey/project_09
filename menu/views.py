@@ -39,7 +39,7 @@ def create_new_menu(request):
             return redirect('menu:menu_detail', pk=menu.pk)
     else:
         form = MenuForm()
-    return render(request, 'menu/menu_edit.html', {'form': form})
+    return render(request, 'menu/new_menu.html', {'form': form})
 
 
 def edit_menu(request, pk):
@@ -52,7 +52,7 @@ def edit_menu(request, pk):
         menu.items = request.POST.get('items', '')
         menu.save()
 
-    return render(request, 'menu/change_menu.html', {
+    return render(request, 'menu/edit_menu.html', {
         'menu': menu,
         'items': items,
         })
