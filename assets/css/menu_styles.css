@@ -1,3 +1,13 @@
 body {
     padding: 30px;
 }
+
+.useful {
+    border-top: 10px solid dimgray;
+}
+
+.large {
+    font-size: 2em;
+    color: darkslategrey;
+    margin-bottom: 8px;
+}

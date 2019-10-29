@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content container">
+<div class="content container useful">
     <div class="row">
         <div class="col-md-8">
             {% for menu in menus %}
                 <h1>
                     {% if user.is_authenticated %}
                         <a class="btn btn-default" href="{% url 'menu:menu_edit' pk=menu.pk %}">
-                            <span class="glyphicon glyphicon-pencil"></span></a>
+                            <i class="fas fa-edit large"></i></a>
                     {% endif %}
                     <a href="{% url 'menu:menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
                 </h1>
