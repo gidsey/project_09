@@ -1,19 +1,19 @@
 from django import forms
-# from django.forms.extras.widgets import SelectDateWidget
 
-from .models import Menu, Item, Ingredient
-from django.forms import DateField
+from .models import Menu
+from django.forms import DateField, CharField
 
 
 class MenuForm(forms.ModelForm):
-
+    season = CharField
     expiration_date = DateField
 
     class Meta:
         model = Menu
 
         fields = (
-            'expiration_date',
+            'season',
             'items',
+            'expiration_date',
         )
         exclude = ('created_date', )

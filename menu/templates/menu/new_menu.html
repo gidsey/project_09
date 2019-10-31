@@ -10,12 +10,12 @@
 
                      <div class="form-group">
                          <label for="season">Season:</label>
-                        <input class="form-control" type="text" name="season" value="{{ menu.season }}">
+                        <input class="form-control" type="text" name="season" id="season" value="{{ menu.season }}">
                      </div>
                          <div class="form-group">
                         <label for="items">Items:</label>
 {#                         {{ form.items }}#}
-                        <select multiple class="form-control" id="items">
+                        <select multiple class="form-control" id="id_items">
                             {% for item in form.items %}
                                 <option value="{{ item }}"></option>
                             {% endfor %}

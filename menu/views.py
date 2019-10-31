@@ -5,7 +5,8 @@ from operator import attrgetter
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
 from .models import *
-from .forms import *
+
+from . import forms
 
 
 def menu_list(request):
@@ -35,15 +36,15 @@ def edit_item(request, pk):
 
 
 def create_new_menu(request):
+    form = forms.MenuForm()
     if request.method == "POST":
-        form = MenuForm(request.POST)
+        form = forms.MenuForm(data=request.POST)
         if form.is_valid():
             menu = form.save(commit=False)
             menu.created_date = timezone.now()
             menu.save()
             return redirect('menu:menu_detail', pk=menu.pk)
-    else:
-        form = MenuForm()
+
     return render(request, 'menu/new_menu.html', {'form': form})
 
 
