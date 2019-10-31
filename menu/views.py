@@ -41,10 +41,10 @@ def create_new_menu(request):
         form = forms.MenuForm(data=request.POST)
         if form.is_valid():
             menu = form.save(commit=False)
+            # menu.items = form.cleaned_data('items')
             menu.created_date = timezone.now()
             menu.save()
             return redirect('menu:menu_detail', pk=menu.pk)
-
     return render(request, 'menu/new_menu.html', {'form': form})
 
 

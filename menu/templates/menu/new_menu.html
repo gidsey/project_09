@@ -14,12 +14,16 @@
                      </div>
                          <div class="form-group">
                         <label for="items">Items:</label>
-{#                         {{ form.items }}#}
-                        <select multiple class="form-control" id="id_items">
-                            {% for item in form.items %}
-                                <option value="{{ item }}"></option>
-                            {% endfor %}
+                        {{ form.items }}
+
+{#                        <select name="items" multiple class="form-control" id="items" >#}
+{#                            {% for item in form.items %}#}
+{#                                <option value="{{ item }}"></option>#}
+{#                            {% endfor %}#}
+
+
                         </select>
+                             <div class="text-muted">{{ form.items.help_text }}</div>
                     </div>
                          <div class="form-group">
                         <label for="expiration_date">Expiration Date:</label>
