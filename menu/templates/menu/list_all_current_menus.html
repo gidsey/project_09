@@ -1,27 +1,30 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="content container">
-    <div class="row">
-        <div class="col-md-8">
-            {% for menu in menus %}
-                <h1>
-                    {% if user.is_authenticated %}
-                        <a class="btn btn-default" href="{% url 'menu:menu_edit' pk=menu.pk %}">
-                            <i class="fas fa-edit large"></i></a>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% for menu in menus %}
+                    <h1>
+
+                        <a href="{% url 'menu:menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
+                          {% if user.is_authenticated %}
+                            <a class="btn btn-default" href="{% url 'menu:menu_edit' pk=menu.pk %}">
+                                <i class="fas fa-edit large"></i></a>
+                        {% endif %}
+                    </h1>
+                    <p>{{ menu.items.all|join:", " }}</p>
+
+                    {% if menu.expiration_date %}
+                        <div class="text-muted mt-0 mb-4">
+                            Expires on: {{ menu.expiration_date }}
+                        </div>
+                        <hr>
                     {% endif %}
-                    <a href="{% url 'menu:menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
-                </h1>
-                <p>{{ menu.items.all|join:", " }}</p>
-                <div class="post">
-                {% if menu.expiration_date %}
-                    <div class="date">
-                        Expires on: {{ menu.expiration_date }}
-                    </div>
-                {% endif %}
-            {% endfor %}
+
+                {% endfor %}
             </div>
         </div>
     </div>
-</div>
+    </div>
 {% endblock %}
