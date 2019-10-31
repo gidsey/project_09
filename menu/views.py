@@ -41,9 +41,11 @@ def create_new_menu(request):
         form = forms.MenuForm(data=request.POST)
         if form.is_valid():
             menu = form.save(commit=False)
-            # menu.items = form.cleaned_data('items')
+            selected_items = form.cleaned_data['items']
+            print('items = {}'.format(selected_items))
             menu.created_date = timezone.now()
             menu.save()
+            menu.items.set(selected_items)
             return redirect('menu:menu_detail', pk=menu.pk)
     return render(request, 'menu/new_menu.html', {'form': form})
 
