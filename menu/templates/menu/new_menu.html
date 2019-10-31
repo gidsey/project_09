@@ -8,24 +8,20 @@
                 <form method="POST" action="">
                     {% csrf_token %}
 
-                     <div class="form-group">
-                         <label for="season">Season:</label>
+                    <div class="form-group">
+                        <label for="season">Season:</label>
                         <input class="form-control" type="text" name="season" id="season" value="{{ menu.season }}">
-                     </div>
-                         <div class="form-group">
-                        <label for="items">Items:</label>
-                        {{ form.items }}
-
-{#                        <select name="items" multiple class="form-control" id="items" >#}
-{#                            {% for item in form.items %}#}
-{#                                <option value="{{ item }}"></option>#}
-{#                            {% endfor %}#}
-
-
-                        </select>
-                             <div class="text-muted">{{ form.items.help_text }}</div>
                     </div>
-                         <div class="form-group">
+                    <div class="form-group">
+                        <label for="items">Items:</label>
+                        <select name="items" multiple class="form-control multi-select" id="items" size="6">
+                            {% for item in form.items %}
+                                {{ item|truncatechars_html:90 }}
+                            {% endfor %}
+                        </select>
+                        <div class="text-muted">{{ form.items.help_text }}</div>
+                    </div>
+                    <div class="form-group">
                         <label for="expiration_date">Expiration Date:</label>
                         <input class="form-control" type="text" id="expiration_date" name="expiration_date">
                     </div>

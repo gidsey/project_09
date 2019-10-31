@@ -1,13 +1,8 @@
 from django import forms
-
 from .models import Menu, Item
-# from django.forms import DateField, CharField, MultipleChoiceField
 
 
-TEST_CHOICES = [[x.id, x.name] for x in Item.objects.all()]
-# TEST_CHOICES = [[x.id, x.item] for x in Menu.objects.all().filter(items__items__isnull=False)]
-
-# TEST_CHOICES =[[1, 'a'], [2, 'b'], [3, 'c'], [4, 'd']]
+ITEMS = [[x.id, x.name] for x in Item.objects.all()]  # Make a list of all items and their corresponding IDs
 
 
 class MenuForm(forms.ModelForm):
@@ -16,9 +11,9 @@ class MenuForm(forms.ModelForm):
 
     items = forms.MultipleChoiceField(
         # validators=
-        choices=TEST_CHOICES,
+        choices=ITEMS,
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
-        widget=forms.CheckboxSelectMultiple(),
+        widget=forms.SelectMultiple(attrs={'size': 30}),
     )
 
     class Meta:
@@ -29,4 +24,3 @@ class MenuForm(forms.ModelForm):
             'items',
             'expiration_date',
         )
-        # exclude = ('created_date', )

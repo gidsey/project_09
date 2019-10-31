@@ -39,10 +39,10 @@ def create_new_menu(request):
     form = forms.MenuForm()
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST)
+        # print('form.items {}'.format(form))
         if form.is_valid():
             menu = form.save(commit=False)
             selected_items = form.cleaned_data['items']
-            print('items = {}'.format(selected_items))
             menu.created_date = timezone.now()
             menu.save()
             menu.items.set(selected_items)
