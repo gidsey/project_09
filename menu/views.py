@@ -13,6 +13,7 @@ def menu_list(request):
     menus = Menu.objects.all().prefetch_related(
         'items'
         ).filter(expiration_date__gte=now).order_by('expiration_date')
+
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 
