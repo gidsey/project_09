@@ -13,7 +13,7 @@ def menu_list(request):
     now = timezone.now()
     menus = Menu.objects.all().prefetch_related(
         'items'
-        ).filter(expiration_date__gte=now).order_by('expiration_date')
+        ).filter(expiration_date__gte=now).order_by('-expiration_date')
 
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
@@ -39,7 +39,6 @@ def create_new_menu(request):
     form = forms.MenuForm()
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST)
-        # print('form.items {}'.format(form))
         if form.is_valid():
             menu = form.save(commit=False)
             selected_items = form.cleaned_data['items']
