@@ -12,7 +12,7 @@ def menu_list(request):
     now = timezone.now()
     menus = Menu.objects.all().prefetch_related(
         'items'
-        ).filter(expiration_date__gte=now).order_by('-expiration_date')
+        ).filter(expiration_date__gte=now).order_by('expiration_date')
     return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
 
 
