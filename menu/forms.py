@@ -13,7 +13,8 @@ class MenuForm(forms.ModelForm):
         # validators=
         choices=ITEMS,
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
-        widget=forms.SelectMultiple(attrs={'size': 30}),
+        widget=forms.SelectMultiple,
+        # initial=
     )
 
     class Meta:

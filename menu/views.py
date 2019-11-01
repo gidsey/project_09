@@ -14,7 +14,6 @@ def menu_list(request):
     menus = models.Menu.objects.all().prefetch_related(
         'items'
         ).filter(expiration_date__gte=now).order_by('-expiration_date')
-
     return render(request, 'menu/menu_list.html', {'menus': menus})
 
 
@@ -50,20 +49,26 @@ def create_new_menu(request):
 
 
 def edit_menu(request, pk):
+    # menu = get_object_or_404(models.Menu, pk=pk)
+    try:
+        menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
+    except ObjectDoesNotExist:
+        raise Http404
+
     form = forms.MenuForm()
-    menu = get_object_or_404(models.Menu, pk=pk)
-    # items = models.Item.objects.all()
+    # all_items = models.Item.objects.all()
 
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST)
         # menu.season = request.POST.get('season', '')
         # menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
-        # # menu.items = request.POST.get('items', '')
+        # menu.items = request.POST.get('items', '')
         # menu.save()
         # menu.items.set(request.POST.get('items', ''))
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
-        # 'items': items,
+        # 'all_items': all_items,
+        'selected': menu.items.all,
         'form': form,
         })
