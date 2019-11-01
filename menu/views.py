@@ -50,16 +50,20 @@ def create_new_menu(request):
 
 
 def edit_menu(request, pk):
+    form = forms.MenuForm()
     menu = get_object_or_404(models.Menu, pk=pk)
-    items = models.Item.objects.all()
+    # items = models.Item.objects.all()
 
     if request.method == "POST":
-        menu.season = request.POST.get('season', '')
-        menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
-        menu.items = request.POST.get('items', '')
-        menu.save()
+        form = forms.MenuForm(data=request.POST)
+        # menu.season = request.POST.get('season', '')
+        # menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
+        # # menu.items = request.POST.get('items', '')
+        # menu.save()
+        # menu.items.set(request.POST.get('items', ''))
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
-        'items': items,
+        # 'items': items,
+        'form': form,
         })
