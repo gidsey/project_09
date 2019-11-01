@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="content container useful">
+    <div class="content container">
         <div class="row">
             <div class="col-md-8">
-                <h1>Edit Menu for {{ menu.season }}</h1>
+                <h1>Edit Menu for '{{ menu.season }}'</h1>
                 <form action="" method="POST">
                     {% csrf_token %}
 

@@ -4,31 +4,31 @@ from django.utils import timezone
 from operator import attrgetter
 from datetime import datetime, timedelta
 from django.core.exceptions import ObjectDoesNotExist
-from .models import *
+from . import models
 
 from . import forms
 
 
 def menu_list(request):
     now = timezone.now()
-    menus = Menu.objects.all().prefetch_related(
+    menus = models.Menu.objects.all().prefetch_related(
         'items'
         ).filter(expiration_date__gte=now).order_by('-expiration_date')
 
-    return render(request, 'menu/list_all_current_menus.html', {'menus': menus})
+    return render(request, 'menu/menu_list.html', {'menus': menus})
 
 
 def menu_detail(request, pk):
-    menu = Menu.objects.prefetch_related('items').get(pk=pk)
+    menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
     return render(request, 'menu/menu_detail.html', {'menu': menu})
 
 
 def item_detail(request, pk):
     try:
-        item = Item.objects.prefetch_related('chef').get(pk=pk)
+        item = models.Item.objects.prefetch_related('chef').get(pk=pk)
     except ObjectDoesNotExist:
         raise Http404
-    return render(request, 'menu/detail_item.html', {'item': item})
+    return render(request, 'menu/item_detail.html', {'item': item})
 
 
 def edit_item(request, pk):
@@ -46,12 +46,12 @@ def create_new_menu(request):
             menu.save()
             menu.items.set(selected_items)
             return redirect('menu:menu_detail', pk=menu.pk)
-    return render(request, 'menu/new_menu.html', {'form': form})
+    return render(request, 'menu/menu_new.html', {'form': form})
 
 
 def edit_menu(request, pk):
-    menu = get_object_or_404(Menu, pk=pk)
-    items = Item.objects.all()
+    menu = get_object_or_404(models.Menu, pk=pk)
+    items = models.Item.objects.all()
 
     if request.method == "POST":
         menu.season = request.POST.get('season', '')
@@ -59,7 +59,7 @@ def edit_menu(request, pk):
         menu.items = request.POST.get('items', '')
         menu.save()
 
-    return render(request, 'menu/edit_menu.html', {
+    return render(request, 'menu/menu_edit.html', {
         'menu': menu,
         'items': items,
         })

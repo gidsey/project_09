@@ -9,7 +9,7 @@
                         <a href="{% url 'menu:menu_detail' pk=menu.pk %}">{{ menu.season }}</a>
                           {% if user.is_authenticated %}
                             <a class="btn btn-default" href="{% url 'menu:menu_edit' pk=menu.pk %}">
-                                <i class="fas fa-edit large"></i></a>
+                                <i class="fas fa-edit fa-2x tomato"></i></a>
                         {% endif %}
                     </h1>
                     <p>{{ menu.items.all|join:", " }}</p>

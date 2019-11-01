@@ -2,13 +2,11 @@ body {
     padding: 30px;
 }
 
-
 .useful {
     border-top: 6px solid darkslategrey;
 }
 
-.large {
-    font-size: 1.8em;
+.tomato {
     color: tomato;
     margin-bottom: 8px;
 }
@@ -16,9 +14,3 @@ body {
 .multi-select {
     resize: both;
 }
-
-select.form-control{
-
-    line-height:30px;
-
-    }
