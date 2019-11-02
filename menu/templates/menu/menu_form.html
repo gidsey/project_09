@@ -8,6 +8,7 @@
                     </div>
                     <div class="form-group">
                     <p class="text-danger">These items should be pre-selected in the list below: {{ selected }}</p>
+                    <p>{{ menu.items.all }}</p>
                         <label for="items">Items:</label>
                         <select name="items" multiple class="form-control multi-select" id="items" size="6">
                             {% for item in form.items %}

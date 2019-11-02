@@ -55,20 +55,20 @@ def edit_menu(request, pk):
     except ObjectDoesNotExist:
         raise Http404
 
-    form = forms.MenuForm()
-    # all_items = models.Item.objects.all()
+    form = forms.MenuForm(instance=menu)
+    all_items = models.Item.objects.all()
 
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST)
-        # menu.season = request.POST.get('season', '')
-        # menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
-        # menu.items = request.POST.get('items', '')
-        # menu.save()
-        # menu.items.set(request.POST.get('items', ''))
+        menu.season = request.POST.get('season', '')
+        menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
+        menu.items = request.POST.get('items', '')
+        menu.save()
+        menu.items.set(request.POST.get('items', ''))
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
-        # 'all_items': all_items,
+        'all_items': all_items,
         'selected': menu.items.all,
         'form': form,
         })
