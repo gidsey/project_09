@@ -5,36 +5,38 @@
         <div class="row">
             <div class="col-md-8">
                 <h1>Edit Menu for '{{ menu.season }}'</h1>
-{#                {% include "menu/menu_form.html" %}#}
+                {% include "menu/menu_form.html" %}
 
-                <form action="" method="POST">
-                    {% csrf_token %}
+{#                <form action="" method="POST">#}
+{#                    {% csrf_token %}#}
+{##}
+{#                 <div class="form-group">#}
+{#                        <label for="season">Season:</label>#}
+{#                        <input class="form-control" type="text" name="season" id="season"#}
+{#                        {% if menu.season %}value="{{ menu.season }}" {% endif %}>#}
+{#                    </div>#}
+{#                    <div class="form-group">#}
+{#                        <label for="items">Items:</label>#}
+{#                        <select name="items" multiple class="form-control multi-select" id="items" size="6">#}
+{#                            {% for item in all_items %}#}
+{#                                <option value="{{ item }}"#}
+{#                                    {% if item in selected %}#}
+{#                                        selected=""#}
+{#                                    {% endif %}>{{ item }}#}
+{#                                </option>#}
+{#                            {% endfor %}#}
+{#                        </select>#}
+{#                    </div>#}
+{##}
+{#                     <div class="form-group">#}
+{#                        <label for="expiration_date">Expiration Date:</label>#}
+{#                        <input class="form-control" type="text" id="expiration_date" name="expiration_date"#}
+{#                        {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %}>#}
+{#                    </div>#}
+{#                    <input type="submit" class="btn btn-primary" value="Submit"/>#}
+{#                </form>#}
 
-                 <div class="form-group">
-                        <label for="season">Season:</label>
-                        <input class="form-control" type="text" name="season" id="season"
-                        {% if menu.season %}value="{{ menu.season }}" {% endif %}>
-                    </div>
-                    <div class="form-group">
-                        <label for="items">Items:</label>
-                        <select name="items" multiple class="form-control multi-select" id="items" size="6">
-                            {% for item in all_items %}
-                                <option value="{{ item }}"
-                                    {% if item in selected %}
-                                        selected=""
-                                    {% endif %}>{{ item }}
-                                </option>
-                            {% endfor %}
-                        </select>
-                    </div>
 
-                     <div class="form-group">
-                        <label for="expiration_date">Expiration Date:</label>
-                        <input class="form-control" type="text" id="expiration_date" name="expiration_date"
-                        {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %}>
-                    </div>
-                    <input type="submit" class="btn btn-primary" value="Submit"/>
-                </form>
             </div>
         </div>
     </div>

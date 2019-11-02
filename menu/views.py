@@ -50,25 +50,29 @@ def create_new_menu(request):
 
 def edit_menu(request, pk):
     # menu = get_object_or_404(models.Menu, pk=pk)
+    selected_items = []
     try:
         menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
     except ObjectDoesNotExist:
         raise Http404
 
-    form = forms.MenuForm(instance=menu)
-    all_items = models.Item.objects.all()
+    for item in menu.items.all():
+        selected_items.append(item.id)
+
+    form = forms.MenuForm(initial={'items': selected_items}, instance=menu)
+    # all_items = models.Item.objects.all()
 
     if request.method == "POST":
-        form = forms.MenuForm(data=request.POST)
-        menu.season = request.POST.get('season', '')
-        menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
-        menu.items = request.POST.get('items', '')
-        menu.save()
-        menu.items.set(request.POST.get('items', ''))
+        form = forms.MenuForm(instance=menu, data=request.POST)
+        # menu.season = request.POST.get('season', '')
+        # menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
+        # menu.items = request.POST.get('items', '')
+        # menu.save()
+        # menu.items.set(request.POST.get('items', ''))
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
-        'all_items': all_items,
-        'selected': menu.items.all,
+        # 'all_items': all_items,
+        # 'selected': menu.items.all,
         'form': form,
         })

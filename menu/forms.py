@@ -8,13 +8,11 @@ ITEMS = [[x.id, x.name] for x in Item.objects.all()]  # Make a list of all items
 class MenuForm(forms.ModelForm):
     season = forms.CharField
     expiration_date = forms.DateField
-
     items = forms.MultipleChoiceField(
         # validators=
         choices=ITEMS,
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
-        # widget=forms.SelectMultiple,
-        initial=ITEMS[1],
+        # initial=[2, 4, 6]
     )
 
     class Meta:
