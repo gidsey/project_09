@@ -49,18 +49,14 @@ def create_new_menu(request):
 
 
 def edit_menu(request, pk):
-    # menu = get_object_or_404(models.Menu, pk=pk)
-    selected_items = []
     try:
         menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
     except ObjectDoesNotExist:
         raise Http404
 
-    for item in menu.items.all():
-        selected_items.append(item.id)
+    selected_items = [item.id for item in menu.items.all()]
 
     form = forms.MenuForm(initial={'items': selected_items}, instance=menu)
-    # all_items = models.Item.objects.all()
 
     if request.method == "POST":
         form = forms.MenuForm(instance=menu, data=request.POST)
@@ -72,7 +68,5 @@ def edit_menu(request, pk):
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
-        # 'all_items': all_items,
-        # 'selected': menu.items.all,
         'form': form,
         })

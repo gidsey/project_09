@@ -1,8 +1,8 @@
 from django import forms
-from .models import Menu, Item
+from . import models
 
-
-ITEMS = [[x.id, x.name] for x in Item.objects.all()]  # Make a list of all items and their corresponding IDs
+# Make a list of all items and their corresponding IDs
+ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 
 
 class MenuForm(forms.ModelForm):
@@ -12,11 +12,10 @@ class MenuForm(forms.ModelForm):
         # validators=
         choices=ITEMS,
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
-        # initial=[2, 4, 6]
     )
 
     class Meta:
-        model = Menu
+        model = models.Menu
 
         fields = (
             'season',
