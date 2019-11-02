@@ -16,9 +16,8 @@ class MenuForm(forms.ModelForm):
 
     class Meta:
         model = models.Menu
-
-        fields = (
+        fields = [
             'season',
             'items',
             'expiration_date',
-        )
+        ]
