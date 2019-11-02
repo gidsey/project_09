@@ -53,7 +53,7 @@ def edit_menu(request, pk):
         raise Http404
 
     selected_items = [item.id for item in menu.items.all()]
-    form = forms.MenuForm(initial={'items': selected_items})
+    form = forms.MenuForm(initial={'items': selected_items}, instance=menu)
 
     if request.method == "POST":
         form = forms.MenuForm(instance=menu, data=request.POST)
