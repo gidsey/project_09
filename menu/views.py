@@ -55,16 +55,17 @@ def edit_menu(request, pk):
         raise Http404
 
     selected_items = [item.id for item in menu.items.all()]
-
     form = forms.MenuForm(initial={'items': selected_items}, instance=menu)
 
     if request.method == "POST":
         form = forms.MenuForm(instance=menu, data=request.POST)
-        # menu.season = request.POST.get('season', '')
-        # menu.expiration_date = request.POST.get('expiration_date', ''), '%m/%d/%Y'
-        # menu.items = request.POST.get('items', '')
-        # menu.save()
-        # menu.items.set(request.POST.get('items', ''))
+        if form.is_valid():
+            menu = form.save(commit=False)
+            selected_items = form.cleaned_data['items']
+            menu.created_date = timezone.now()
+            menu.save()
+            menu.items.set(selected_items)
+            return redirect('menu:menu_detail', pk=menu.pk)
 
     return render(request, 'menu/menu_edit.html', {
         'menu': menu,
