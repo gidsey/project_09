@@ -8,6 +8,7 @@ ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 class MenuForm(forms.ModelForm):
     season = forms.CharField
     expiration_date = forms.DateField
+    error_messages = {'invalid': 'Please choose a valid expiry date for this menu.'},
     items = forms.MultipleChoiceField(
         # validators=
         choices=ITEMS,

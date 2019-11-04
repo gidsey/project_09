@@ -21,6 +21,11 @@
                         {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %}>
                     </div>
 
+                   {% for error in form.errors %}
+                                    <div class="invalid-feedback">
+                                        {{ error }}
+                                     </div>
+                   {% endfor %}
                     <button type="submit" class="btn btn-primary">Save</button>
                     <a href="{% url 'menu:menu_list' %}" class="btn btn-outline-secondary">Cancel</a>
                 </form>
