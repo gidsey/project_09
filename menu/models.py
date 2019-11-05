@@ -3,7 +3,7 @@ from django.utils import timezone
 
 
 class Menu(models.Model):
-    season = models.CharField(max_length=20) # Required Field
+    season = models.CharField(max_length=20)  # Required Field
     items = models.ManyToManyField('Item', related_name='items')  # Required Field
     created_date = models.DateTimeField(default=timezone.now)  # Hidden Field
     expiration_date = models.DateField()  # Required Field
