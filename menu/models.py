@@ -6,7 +6,7 @@ class Menu(models.Model):
     season = models.CharField(max_length=20) # Required Field
     items = models.ManyToManyField('Item', related_name='items')  # Required Field
     created_date = models.DateTimeField(default=timezone.now)  # Hidden Field
-    expiration_date = models.DateField(blank=True)  # Optional Field
+    expiration_date = models.DateField()  # Required Field
 
     def __str__(self):
         return self.season
