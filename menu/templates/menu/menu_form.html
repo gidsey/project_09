@@ -1,6 +1,6 @@
                 <form method="POST" action="">
                     {% csrf_token %}
-
+                    {{ form }}
                     <div class="form-group mb-1">
                         <label for="season">Season:</label>
                         <input class="form-control" type="text" name="season" id="season"
@@ -17,7 +17,7 @@
                                 {{ item|truncatechars_html:90 }}
                             {% endfor %}
                         </select>
-                        <dviv class="text-muted">{{ form.items.help_text }}</div>
+                        <div class="text-muted">{{ form.items.help_text }}</div>
                     </div>
                     <div>
                     {% if form.items.errors %}

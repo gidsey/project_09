@@ -43,7 +43,10 @@ def create_new_menu(request):
             menu.save()
             menu.items.set(form.cleaned_data['items'])
             return redirect('menu:menu_detail', pk=menu.pk)
-    return render(request, 'menu/menu_new.html', {'form': form})
+
+    return render(request, 'menu/menu_new.html', {
+        'form': form,
+    })
 
 
 def edit_menu(request, pk):
