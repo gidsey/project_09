@@ -7,8 +7,8 @@ ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 
 class MenuForm(forms.ModelForm):
     """
-    Form used to create and delete menus
-    as well as to edit existig menus.
+    Form used to create new menus
+    and edit existig menus.
     """
     season = forms.CharField(
         required=True,
@@ -45,6 +45,9 @@ class MenuForm(forms.ModelForm):
 
 
 class DeleteMenuForm(forms.ModelForm):
+    """
+    Form used to delete menus.
+    """
     season = forms.CharField(required=True)
     expiration_date = forms.DateField(required=True)
 
