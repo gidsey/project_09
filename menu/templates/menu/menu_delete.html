@@ -4,8 +4,20 @@
     <div class="content container">
         <div class="row">
             <div class="col-md-8">
-                <h1>Delete Menu '{{ menu.season }}'?</h1>
-{#                {% include "menu/menu_form.html" %}#}
+                <h1>Confirmation</h1>
+                <p class="lead mt-3">Are you sure you want to delete this menu?
+                <h3 class="text-prmary">{{ menu.season }}</h3>
+                    <p>Expires: {{ menu.expiration_date }}</p>
+
+                <form method="POST" action="">
+                    {% csrf_token %}
+
+                    <div class="form-group mt-4">
+                     <button type="submit" class="btn btn-danger">Delete</button>
+                    <a href="{% url 'menu:menu_edit' pk=menu.pk %}" class="btn btn-outline-secondary">Go back</a>
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

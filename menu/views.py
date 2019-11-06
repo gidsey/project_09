@@ -82,6 +82,8 @@ def edit_menu(request, pk):
 def delete_menu(request, pk):
     """Delete a menu and related references."""
     menu = get_object_or_404(models.Menu, pk=pk)
-    return render(request, 'menu/menu_delete.html',
-                  {'menu': menu}
-                  )
+    form = forms.MenuForm(instance=menu)
+    return render(request, 'menu/menu_delete.html', {
+        'menu': menu,
+        'form': form,
+        })

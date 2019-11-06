@@ -6,6 +6,10 @@ ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 
 
 class MenuForm(forms.ModelForm):
+    """
+    Form used to create and delete menus
+    as well as to edit existig menus.
+    """
     season = forms.CharField(
         required=True,
         error_messages={
@@ -19,7 +23,6 @@ class MenuForm(forms.ModelForm):
             'required': "Expiration date is required.",
         },
         label="Expiration Date:",
-        help_text='hejh',
     )
     items = forms.MultipleChoiceField(
         required=True,
@@ -39,3 +42,4 @@ class MenuForm(forms.ModelForm):
             'items',
             'expiration_date',
         ]
+
