@@ -1,18 +1,18 @@
                 <form method="POST" action="">
                     {% csrf_token %}
-                    {{ form }}
+
                     <div class="form-group mb-1">
                         <label for="season">Season:</label>
                         <input class="form-control" type="text" name="season" id="season"
-                        {% if menu.season %}value="{{ menu.season }}" {% endif %}>
+                        {% if menu.season %}value="{{ menu.season }}" {% endif %} required="">
                     </div>
                     {% if form.season.errors %}
                         <p class="text-danger pt-0">{{ form.season.errors|striptags }}</p>
                     {% endif %}
 
                     <div class="form-group mt-4 mb-1">
-                        <label for="items">Items:</label>
-                        <select name="items" multiple class="form-control multi-select" id="items" size="6">
+                        <label for="items">{{form.items.label}}</label>
+                        <select name="items" multiple class="form-control multi-select" id="items" size="6" required="">
                             {% for item in form.items %}
                                 {{ item|truncatechars_html:90 }}
                             {% endfor %}
@@ -28,7 +28,7 @@
                         <label for="expiration_date">{{ form.expiration_date.label }}</label>
 
                         <input class="form-control" type="text" id="expiration_date" name="expiration_date"
-                        {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %}>
+                        {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %} required="">
                     </div>
                     {% if form.expiration_date.errors %}
                         <p class="text-danger">{{ form.expiration_date.errors|striptags }}</p>

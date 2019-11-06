@@ -23,12 +23,13 @@ class MenuForm(forms.ModelForm):
     )
     items = forms.MultipleChoiceField(
         required=True,
-        # validators=
         choices=ITEMS,
+        label="Items - choose one or more from the list:",
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
         error_messages={
             'required': "Choose at least one item.",
         },
+        # validators=
     )
 
     class Meta:

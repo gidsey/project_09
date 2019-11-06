@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import Http404
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
 
 from . import models
 from . import forms
@@ -42,6 +43,10 @@ def create_new_menu(request):
             menu.created_date = timezone.now()
             menu.save()
             menu.items.set(form.cleaned_data['items'])
+            messages.success(
+                request,
+                "Menu added successfully."
+            )
             return redirect('menu:menu_detail', pk=menu.pk)
 
     return render(request, 'menu/menu_new.html', {
@@ -65,6 +70,10 @@ def edit_menu(request, pk):
             menu.created_date = timezone.now()
             menu.save()
             menu.items.set(form.cleaned_data['items'])
+            messages.success(
+                request,
+                "Menu updated successfully."
+            )
             return redirect('menu:menu_detail', pk=menu.pk)
 
     return render(request, 'menu/menu_edit.html', {

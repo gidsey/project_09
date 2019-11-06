@@ -1,66 +1,78 @@
 {% load static from staticfiles %}
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Soda Fountain</title>
+<div lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Soda Fountain</title>
 
-    <!-- Mobile Specific Metas
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- Mobile Specific Metas
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- Fontawesome
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="{% static 'fontawesome/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'fontawesome/css/solid.min.css' %}">
+        <!-- Fontawesome
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="stylesheet" href="{% static 'fontawesome/css/fontawesome.min.css' %}">
+        <link rel="stylesheet" href="{% static 'fontawesome/css/solid.min.css' %}">
 
-     <!-- JQuery
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script type="text/javascript" src="{% static "js/jquery-3.1.1.min.js" %}"></script>
-
-
-     <!-- Bootstrap CSS & JS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-    <!-- JavaScript
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <script type="text/javascript" src="{% static "js/global.js" %}"></script>
+        <!-- JQuery
+       –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <script type="text/javascript" src="{% static "js/jquery-3.1.1.min.js" %}"></script>
 
 
-    <!-- Datepicker CSS & JS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <!-- Bootstrap CSS & JS
+       –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+                crossorigin="anonymous"></script>
+
+        <!-- JavaScript
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <script type="text/javascript" src="{% static "js/global.js" %}"></script>
+
+
+        <!-- Datepicker CSS & JS
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.css"
-          integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"
-            integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
+              integrity="sha256-b88RdwbRJEzRx95nCuuva+hO5ExvXXnpX+78h8DjyOE=" crossorigin="anonymous"/>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/0.6.5/datepicker.min.js"
+                integrity="sha256-/7FLTdzP6CfC1VBAj/rsp3Rinuuu9leMRGd354hvk0k=" crossorigin="anonymous"></script>
 
 
-    <!-- Custom CSS & JS
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="stylesheet" href="{% static 'css/menu_styles.css' %}">
+        <!-- Custom CSS & JS
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="stylesheet" href="{% static 'css/menu_styles.css' %}">
 
 
-    <!-- Favicon
-    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-    <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
+        <!-- Favicon
+        –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+        <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.png' %}">
 
-</head>
-<body>
+    </head>
+    <body>
 
-<div class="page-header">
-    {% if user.is_authenticated %}
-        <a href="{% url 'menu:menu_new' %}" class="top-menu"><i class="fas fa-plus-square fa-2x tomato"></i></a>
+    {% if messages %}
+        <div class="pb-2 mt-4 mb-2 w-75">
+            {% for message in messages %}
+                <p{% if message.tags %}
+                    class="no-bullets alert alert-{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+        </div>
     {% endif %}
-    <h1><a href="/">Soda Fountain</a></h1>
-</div>
 
-</body>
-{% block content %}
-{% endblock %}
-</body>
-</html>
+
+    <div class="pb-2 mt-4 mb-2 border-bottom">
+        {% if user.is_authenticated %}
+            <a href="{% url 'menu:menu_new' %}" class="top-menu"><i class="fas fa-plus-square fa-2x tomato"></i></a>
+        {% endif %}
+        <h1><a href="/">Soda Fountain</a></h1>
+    </div>
+
+    </body>
+    {% block content %}
+    {% endblock %}
+
+    </body>
+    </html>
