@@ -2,10 +2,6 @@ body {
     padding: 30px;
 }
 
-.useful {
-    border-top: 6px solid darkslategrey;
-}
-
 .tomato {
     color: tomato;
     margin-bottom: 8px;
