@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404
+from django.http import Http404, HttpResponseRedirect
+from django.urls import reverse
 from django.utils import timezone
 from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
@@ -82,7 +83,14 @@ def edit_menu(request, pk):
 def delete_menu(request, pk):
     """Delete a menu and related references."""
     menu = get_object_or_404(models.Menu, pk=pk)
-    form = forms.MenuForm(instance=menu)
+    form = forms.DeleteMenuForm(instance=menu)
+
+    if request.method == "POST":
+        form = forms.DeleteMenuForm(instance=menu, data=request.POST)
+        if form.is_valid():
+            menu.delete()
+            messages.success(request, "Menu deleted successfully.")
+            return HttpResponseRedirect(reverse('menu:menu_list'))
     return render(request, 'menu/menu_delete.html', {
         'menu': menu,
         'form': form,

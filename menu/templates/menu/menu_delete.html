@@ -4,13 +4,18 @@
     <div class="content container">
         <div class="row">
             <div class="col-md-8">
-                <h1>Confirmation</h1>
-                <p class="lead mt-3">Are you sure you want to delete this menu?
-                <h3 class="text-prmary">{{ menu.season }}</h3>
+                <h1>Are you sure?</h1>
+                <p class="mt-2">Please confirm that you want to delete this menu.
+                <div class="card bg-light">
+  <div class="card-body"><h3 class="text-prmary">{{ menu.season }}</h3>
                     <p>Expires: {{ menu.expiration_date }}</p>
+            </div>
+        </div>
 
                 <form method="POST" action="">
                     {% csrf_token %}
+                    <input type="hidden" name="season" id="season" value="{{ menu.season }}">
+                    <input type="hidden" name="expiration_date" id="expiration_date" value="{{ menu.expiration_date|date:"Y-m-d" }}">
 
                     <div class="form-group mt-4">
                      <button type="submit" class="btn btn-danger">Delete</button>

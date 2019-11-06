@@ -43,3 +43,15 @@ class MenuForm(forms.ModelForm):
             'expiration_date',
         ]
 
+
+class DeleteMenuForm(forms.ModelForm):
+    season = forms.CharField(required=True)
+    expiration_date = forms.DateField(required=True)
+
+    class Meta:
+        model = models.Menu
+        fields = [
+            'season',
+            'expiration_date',
+
+        ]
