@@ -8,5 +8,12 @@
                 {% include "menu/menu_form.html" %}
             </div>
         </div>
+
+
+
+    <div class="col-md-8 mt-3">
+    <hr>
+    <a href="{% url 'menu:menu_delete' pk=menu.pk %}" class="btn btn-danger">Delete</a>
     </div>
+
 {% endblock %}
