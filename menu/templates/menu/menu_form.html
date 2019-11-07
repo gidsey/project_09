@@ -1,4 +1,4 @@
-                <form method="POST" action="">
+            <form method="POST" action="">
                     {% csrf_token %}
 
                     <div class="form-group mb-1">
@@ -30,6 +30,7 @@
                         <input class="form-control" type="text" id="expiration_date" name="expiration_date"
                         {% if menu.expiration_date %} value="{{ menu.expiration_date|date:"Y-m-d" }}" {% endif %} required="">
                     </div>
+
                     {% if form.expiration_date.errors %}
                         <p class="text-danger">{{ form.expiration_date.errors|striptags }}</p>
                     {% endif %}
