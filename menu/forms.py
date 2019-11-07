@@ -1,5 +1,6 @@
 from django import forms
 from . import models
+from . import validators
 
 # Make a list of all items and their corresponding IDs
 ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
@@ -43,6 +44,12 @@ class MenuForm(forms.ModelForm):
             'expiration_date',
         ]
 
+    def clean(self):
+        """Validate that the emails match"""
+        cleaned_data = super().clean()
+        validators.BrandCheckValidator().validate(cleaned_data['season'])
+        return cleaned_data
+
 
 class DeleteMenuForm(forms.ModelForm):
     """
@@ -56,5 +63,4 @@ class DeleteMenuForm(forms.ModelForm):
         fields = [
             'season',
             'expiration_date',
-
         ]
