@@ -2,6 +2,9 @@ from django import forms
 from . import models
 from . import validators
 
+import datetime
+
+
 # Make a list of all items and their corresponding IDs
 ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 
@@ -12,25 +15,27 @@ class MenuForm(forms.ModelForm):
     and edit existig menus.
     """
 
-    # def __init__(self, *args, **kwargs):
-    #     super(MenuForm, self).__init__(*args, **kwargs)
-    #     self.fields['expiration_date'].validators.append(validators.validate_date)
+    def __index__(self, *args, **kwargs):
+        super(MenuForm, self).__init__(*args, **kwargs)
+        self.fields['season'].validators.append(validators.BrandCheckValidator)
 
     season = forms.CharField(
         required=True,
+        label='Season (no brand names please):',
         error_messages={
             'required': "Season is required.",
         },
-    ),
+        validators=[validators.BrandCheckValidator]
+    )
     items = forms.MultipleChoiceField(
         required=True,
         choices=ITEMS,
-        label="Items - choose one or more from the list:",
+        label="Items (choose one or more from the list):",
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
         error_messages={
             'required': "Choose at least one item.",
         }
-    ),
+    )
     expiration_date = forms.DateField(
         required=True,
         error_messages={
@@ -38,8 +43,8 @@ class MenuForm(forms.ModelForm):
             'required': "Expiration date is required.",
         },
         label="Expiration Date:",
-        validators=[validators.validate_date]
-    ),
+
+    )
 
     class Meta:
         model = models.Menu
@@ -52,23 +57,12 @@ class MenuForm(forms.ModelForm):
     def clean(self):
         """Validate the form input."""
         cleaned_data = super(MenuForm, self).clean()
-        season = self.cleaned_data.get('season')
-        items = self.cleaned_data.get('items')
-        expiration_date = self.cleaned_data.get('expiration_date')
+        expiration_date = cleaned_data.get('expiration_date')
 
-        print(season)
-        print(items)
-        print(expiration_date)
+        if expiration_date < datetime.date.today():
+            msg = 'Expiry date cannot be in the past.'
+            self.add_error('expiration_date', msg)
 
-        if season != 'tree':
-            msg = 'Season must be a tree!'
-            self.add_error('season', msg)
-
-        if 'Chocolate soda' not in items:
-            msg = 'Menu must contain Chocolate soda!'
-            self.add_error('items', msg)
-
-        # validators.validate_date().validate(cleaned_data['expiration_date'])
         return cleaned_data
 
 

@@ -4,19 +4,14 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy as _
 
-BRANDS = ['coca-cola', 'pepsi', 'coke', '7up']
+# Sample list of brnad names
+BRANDS = ['coca-cola', 'pepsi', 'cola', 'coke', '7up', 'sprite', 'fanta', 'tab', 'mountain dew', 'dr pepper', 'tango.']
 
 
-class BrandCheckValidator:
-    """Validate the seaon does not contain any brand names."""
-    def validate(self, season):
-        if season in BRANDS:
-            raise ValidationError(
-                _("Season cannot contain any brand names!"),
-                code='season_contains_brandnames'
-                )
-
-
-def validate_date(value):
-    print('validate_date called')
-    print(value)
+def BrandCheckValidator(value):
+    """Validate the season does not contain any brand names."""
+    if value.lower() in BRANDS:
+        raise ValidationError(
+            _('Season cannot contain any brand names!'),
+            code='brandnames_not_allowed'
+            )

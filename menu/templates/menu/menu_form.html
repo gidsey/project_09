@@ -1,8 +1,13 @@
             <form method="POST" action="">
                     {% csrf_token %}
 
+
+                    {% for hidden_field in form.hidden_fields %}
+                        {{ hidden_field }}
+                      {% endfor %}
+
                     <div class="form-group mb-1">
-                        <label for="season">Season:</label>
+                        <label for="season">{{ form.season.label }}</label>
                         <input class="form-control" type="text" name="season" id="season"
                         {% if menu.season %}value="{{ menu.season }}" {% endif %} required="">
                     </div>
@@ -11,7 +16,7 @@
                     {% endif %}
 
                     <div class="form-group mt-4 mb-1">
-                        <label for="items">{{form.items.label}}</label>
+                        <label for="items">{{ form.items.label }}</label>
                         <select name="items" multiple class="form-control multi-select" id="items" size="6" required="">
                             {% for item in form.items %}
                                 {{ item|truncatechars_html:90 }}
