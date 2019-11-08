@@ -30,7 +30,7 @@ class MenuForm(forms.ModelForm):
     items = forms.MultipleChoiceField(
         required=True,
         choices=ITEMS,
-        label="Items (choose one or more from the list):",
+        label="Items (choose two or more from the list):",
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
         error_messages={
             'required': "Choose at least one item.",
@@ -57,7 +57,20 @@ class MenuForm(forms.ModelForm):
     def clean(self):
         """Validate the form input."""
         cleaned_data = super(MenuForm, self).clean()
+        season = cleaned_data.get('season')
+        items = cleaned_data.get('items')
         expiration_date = cleaned_data.get('expiration_date')
+
+        if season is None:
+            msg = 'Please enter a name.'
+            self.add_error('season', msg)
+
+        if len(items) < 2:
+            msg = 'You must pick at least two items.'
+            self.add_error('items', msg)
+
+        if expiration_date is not datetime.date:
+            return cleaned_data
 
         if expiration_date < datetime.date.today():
             msg = 'Expiry date cannot be in the past.'
