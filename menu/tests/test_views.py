@@ -32,8 +32,6 @@ class MenuViewsTests(TestCase):
             standard=True,
             ingredients='',
         )
-
-
         self.menu1 = Menu.objects.create(
             season='Autumn 2019',
             item='',
@@ -44,5 +42,5 @@ class MenuViewsTests(TestCase):
     def test_check_data_view(self):
         """Check the index page is redirecting if DB contains data"""
         request = self.factory.get('/')
-        response = views.check_data(request)
-        self.assertEqual(response.status_code, 302)
+        response = views.menu_list(request)
+        self.assertEqual(response.status_code, 200)
