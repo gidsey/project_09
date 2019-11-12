@@ -16,7 +16,7 @@ class MenuViewsTests(TestCase):
         self.factory = RequestFactory()
 
         #  Create a user
-        self.user = User.objects.create_user(username='headchef', email='test@test.com', password='testpass')
+        self.user = User.objects.create_user(username='Jamie Oliver', email='test@test.com', password='testpass')
         #  Create 3x ingredients
         self.ingredient1 = Ingredient.objects.create(name='Mango')
         self.ingredient2 = Ingredient.objects.create(name='Banana')
@@ -62,3 +62,22 @@ class MenuViewsTests(TestCase):
         for item in self.menu1.items.all():
             self.assertContains(response, item)
 
+    def test_menu_detail_view(self):
+        """Check the menu detail view."""
+        request = self.factory.get('/menu/')
+        response = views.menu_detail(request, **{'pk': self.menu1.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.menu1.season)
+        self.assertContains(response, self.menu1.expiration_date.strftime("%B %d, %Y"))
+        for item in self.menu1.items.all():
+            self.assertContains(response, item)
+
+    def test_item_detail_view(self):
+        """Check the menu detail view."""
+        request = self.factory.get('/menu/item/')
+        response = views.item_detail(request, **{'pk': self.item1.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.item1)
+        self.assertContains(response, self.item1.chef)
+        for ingredient in self.item1.ingredients.all():
+            self.assertContains(response, ingredient)

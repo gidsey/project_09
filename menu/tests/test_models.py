@@ -16,7 +16,7 @@ class MenuModelTests(TestCase):
     """
     def setUp(self):
         #  Create a user
-        self.user = User.objects.create_user(username='headchef', email='test@test.com', password='testpass')
+        self.user = User.objects.create_user(username='Jamie Oliver', email='test@test.com', password='testpass')
         #  Create 3x ingredients
         self.ingredient1 = Ingredient.objects.create(name='Mango')
         self.ingredient2 = Ingredient.objects.create(name='Banana')
@@ -60,7 +60,7 @@ class MenuModelTests(TestCase):
         """Test all fields on item."""
         mango_banana = Item.objects.get(name='Mango and Banana Smoothie')
         self.assertEqual(str(mango_banana), 'Mango and Banana Smoothie')
-        self.assertEqual(str(mango_banana.chef), 'headchef')
+        self.assertEqual(str(mango_banana.chef), 'Jamie Oliver')
         self.assertIn(str(mango_banana.description), "Mango banana smoothie is a thick and creamy smoothie.")
         self.assertGreater(timezone.now(), mango_banana.created_date)
         for ingredient in mango_banana.ingredients.all():
