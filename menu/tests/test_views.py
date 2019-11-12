@@ -61,3 +61,4 @@ class MenuViewsTests(TestCase):
         self.assertContains(response, self.menu1.expiration_date.strftime("%b. %d, %Y"))
         for item in self.menu1.items.all():
             self.assertContains(response, item)
+
