@@ -1,12 +1,13 @@
-from django.contrib.sessions.middleware import SessionMiddleware
 import datetime
 from django.test import RequestFactory, TestCase
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AnonymousUser
 from django.utils import timezone
 from django.db.models import Q
 
 from menu.models import Menu, Item, Ingredient
 from menu import views
+from django.urls import reverse
+from django.test import Client
 
 class MenuViewsTests(TestCase):
     """Test the views."""
@@ -14,9 +15,12 @@ class MenuViewsTests(TestCase):
 
         #  Every test needs access to the request factory.
         self.factory = RequestFactory()
-
         #  Create a user
-        self.user = User.objects.create_user(username='Jamie Oliver', email='test@test.com', password='testpass')
+        self.user = User.objects.create_user(
+            username='Jamie Oliver',
+            email='test@test.com',
+            password='testpass')
+        self.anonymous_user = AnonymousUser()
         #  Create 3x ingredients
         self.ingredient1 = Ingredient.objects.create(name='Mango')
         self.ingredient2 = Ingredient.objects.create(name='Banana')
@@ -52,10 +56,9 @@ class MenuViewsTests(TestCase):
         self.menu1.items.set(self.all_items)
 
     def test_menu_list_view(self):
-        """Check the index page view"""
+        """Test the index page view"""
         request = self.factory.get('/')
         response = views.menu_list(request)
-        print(response)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, self.menu1)
         self.assertContains(response, self.menu1.expiration_date.strftime("%b. %d, %Y"))
@@ -63,7 +66,7 @@ class MenuViewsTests(TestCase):
             self.assertContains(response, item)
 
     def test_menu_detail_view(self):
-        """Check the menu detail view."""
+        """Test the menu detail view."""
         request = self.factory.get('/menu/')
         response = views.menu_detail(request, **{'pk': self.menu1.pk})
         self.assertEqual(response.status_code, 200)
@@ -73,7 +76,7 @@ class MenuViewsTests(TestCase):
             self.assertContains(response, item)
 
     def test_item_detail_view(self):
-        """Check the menu detail view."""
+        """Test the menu detail view."""
         request = self.factory.get('/menu/item/')
         response = views.item_detail(request, **{'pk': self.item1.pk})
         self.assertEqual(response.status_code, 200)
@@ -81,3 +84,52 @@ class MenuViewsTests(TestCase):
         self.assertContains(response, self.item1.chef)
         for ingredient in self.item1.ingredients.all():
             self.assertContains(response, ingredient)
+
+    def test_create_new_menu(self):
+        """
+        Test the Create new menu view.
+        Only accessible to logged in user.
+        """
+        request = self.factory.get('/menu/new/')
+        request.user = self.user
+        response = views.create_new_menu(request)
+        self.assertEqual(response.status_code, 200)
+        # for item in self.all_items:
+        #     self.assertContains(response, item)
+
+    # def test_edit_menu_old(self):
+    #     """Test the edit menu view with a logged-in user."""
+    #     request = self.factory.get('/menu/edit/')
+    #     request.user = self.user
+    #     response = views.edit_menu(request, **{'pk': self.menu1.pk})
+    #     self.assertEqual(response.status_code, 200)
+    #     self.assertContains(response, self.menu1)
+    #     self.assertContains(response, self.menu1.expiration_date.date()
+    #     for item in self.all_items:
+    #         self.assertContains(response, item)
+
+    def test_edit_menu(self):
+        """Test logged-in access to the view profile page."""
+        self.client.login(username='Jamie Oliver', password='testpass')
+        response = self.client.get(reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk}))
+        print(response.context['form']['season'].value())
+        self.assertTemplateUsed(response, 'menu/menu_edit.html')
+        self.assertEqual(response.context['form']['season'].value(), self.menu1.season)
+        self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
+        # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
+
+        # for item in self.all_items:
+        #     self.assertContains(response.context, item)
+
+    def test_edit_menu_anonymous(self):
+        """Test the edit menu view with an anonymous user."""
+        request = self.factory.get('/menu/edit/')
+        request.user = self.anonymous_user
+        response = views.edit_menu(request, **{'pk': self.menu1.pk})
+        self.assertNotEqual(response.status_code, 200)
+
+
+
+
+
+

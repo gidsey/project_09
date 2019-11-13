@@ -21,7 +21,7 @@ class MenuModelTests(TestCase):
         self.ingredient1 = Ingredient.objects.create(name='Mango')
         self.ingredient2 = Ingredient.objects.create(name='Banana')
         self.ingredient3 = Ingredient.objects.create(name='Honey')
-        #  Create two sets of ingredients
+        #  Create two QuerySets of ingredients
         self.all_ingredients = Ingredient.objects.all()
         self.two_ingredients = Ingredient.objects.filter(
             Q(name__iexact='Banana') | Q(name__iexact='Honey')).order_by('name')
@@ -42,13 +42,13 @@ class MenuModelTests(TestCase):
             standard=False,
         )
         self.item2.ingredients.set(self.two_ingredients)
-        self.all_items = Item.objects.all()
         #  Create a menu
         self.menu1 = Menu.objects.create(
             season='Autumn 2019',
             created_date=timezone.now(),
             expiration_date=timezone.now() + datetime.timedelta(days=14)
         )
+        self.all_items = Item.objects.all().order_by('name')
         self.menu1.items.set(self.all_items)
 
     def test_ingredient_model(self):
@@ -78,7 +78,7 @@ class MenuModelTests(TestCase):
         self.assertGreater(timezone.now(), autumn_menu.created_date)
         self.assertLess(datetime.date.today(), autumn_menu.expiration_date)
         autumn_menu_items = autumn_menu.items.all().order_by('name')
-        print('autumn_menu_items: {}'.format(autumn_menu_items))
-        print('self.all_items:    {}'.format(self.all_items.order_by('name')))
-        # self.assertQuerysetEqual(autumn_menu_items, self.all_items.order_by('name'))
+        # print('autumn_menu_items: {}'.format(autumn_menu_items))
+        # print('self.all_items:    {}'.format(self.all_items))
+        # self.assertQuerysetEqual(autumn_menu_items, self.all_items)
         self.assertEqual(len(autumn_menu_items), 2)

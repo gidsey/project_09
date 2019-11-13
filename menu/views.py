@@ -38,6 +38,7 @@ def item_detail(request, pk):
 @login_required
 def create_new_menu(request):
     """Create a new menu, chosing from existing items."""
+    """Create a new menu, chosing from existing items."""
     form = forms.MenuForm()
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST)
