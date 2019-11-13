@@ -68,7 +68,7 @@ class MenuModelTests(TestCase):
 
         banana_honey = Item.objects.get(name='Banana and Honey Smoothie')
         banana_honey_ingredients = banana_honey.ingredients.all().order_by('name')
-        # self.assertQuerysetEqual(banana_honey_ingredients, self.two_ingredients)
+        self.assertQuerysetEqual(banana_honey_ingredients, self.two_ingredients, transform=lambda x: x)
         self.assertEqual(len(banana_honey_ingredients), 2)
 
     def test_menu_model(self):
@@ -78,7 +78,4 @@ class MenuModelTests(TestCase):
         self.assertGreater(timezone.now(), autumn_menu.created_date)
         self.assertLess(datetime.date.today(), autumn_menu.expiration_date)
         autumn_menu_items = autumn_menu.items.all().order_by('name')
-        # print('autumn_menu_items: {}'.format(autumn_menu_items))
-        # print('self.all_items:    {}'.format(self.all_items))
-        # self.assertQuerysetEqual(autumn_menu_items, self.all_items)
-        self.assertEqual(len(autumn_menu_items), 2)
+        self.assertQuerysetEqual(autumn_menu_items, self.all_items, transform=lambda x: x)
