@@ -112,14 +112,13 @@ class MenuViewsTests(TestCase):
         """Test logged-in access to the view profile page."""
         self.client.login(username='Jamie Oliver', password='testpass')
         response = self.client.get(reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk}))
-        print(response.context['form']['season'].value())
+        # print(response.context['form']['season'].value())
         self.assertTemplateUsed(response, 'menu/menu_edit.html')
         self.assertEqual(response.context['form']['season'].value(), self.menu1.season)
         self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
         # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
-
-        # for item in self.all_items:
-        #     self.assertContains(response.context, item)
+        # self.assertIn(response.context['form']['items'], 'Chocolate soda')
+        print(response.context['form']['items'])
 
     def test_edit_menu_anonymous(self):
         """Test the edit menu view with an anonymous user."""

@@ -15,7 +15,7 @@ class MenuForm(forms.ModelForm):
     and edit existig menus.
     """
 
-    def __index__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(MenuForm, self).__init__(*args, **kwargs)
         self.fields['season'].validators.append(validators.BrandCheckValidator)
         self.fields['expiration_date'].validators.append(validators.PastDateValidator)
