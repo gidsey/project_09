@@ -18,6 +18,7 @@ class MenuForm(forms.ModelForm):
     def __index__(self, *args, **kwargs):
         super(MenuForm, self).__init__(*args, **kwargs)
         self.fields['season'].validators.append(validators.BrandCheckValidator)
+        self.fields['expiration_date'].validators.append(validators.PastDateValidator)
 
     season = forms.CharField(
         required=True,
@@ -33,7 +34,7 @@ class MenuForm(forms.ModelForm):
         label="Items (choose two or more from the list):",
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
         error_messages={
-            'required': "Choose at least one item.",
+            'required': "Choose at least two items.",
         }
     )
     expiration_date = forms.DateField(
@@ -43,7 +44,7 @@ class MenuForm(forms.ModelForm):
             'required': "Expiration date is required.",
         },
         label="Expiration Date:",
-
+        validators=[validators.PastDateValidator]
     )
 
     class Meta:
@@ -57,24 +58,12 @@ class MenuForm(forms.ModelForm):
     def clean(self):
         """Validate the form input."""
         cleaned_data = super(MenuForm, self).clean()
-        season = cleaned_data.get('season')
         items = cleaned_data.get('items')
-        expiration_date = cleaned_data.get('expiration_date')
 
-        if season is None:
-            msg = 'Please enter a name.'
-            self.add_error('season', msg)
-
-        if len(items) < 2:
-            msg = 'You must pick at least two items.'
-            self.add_error('items', msg)
-
-        if expiration_date is not datetime.date:
-            return cleaned_data
-
-        if expiration_date < datetime.date.today():
-            msg = 'Expiry date cannot be in the past.'
-            self.add_error('expiration_date', msg)
+        if items:
+            if len(items) < 2:
+                msg = 'You must pick at least two items.'
+                self.add_error('items', msg)
 
         return cleaned_data
 
