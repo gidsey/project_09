@@ -94,31 +94,34 @@ class MenuViewsTests(TestCase):
         request.user = self.user
         response = views.create_new_menu(request)
         self.assertEqual(response.status_code, 200)
-        # for item in self.all_items:
-        #     self.assertContains(response, item)
+        for item in self.all_items:
+            self.assertContains(response, item)
 
-    # def test_edit_menu_old(self):
-    #     """Test the edit menu view with a logged-in user."""
-    #     request = self.factory.get('/menu/edit/')
-    #     request.user = self.user
-    #     response = views.edit_menu(request, **{'pk': self.menu1.pk})
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertContains(response, self.menu1)
-    #     self.assertContains(response, self.menu1.expiration_date.date()
-    #     for item in self.all_items:
-    #         self.assertContains(response, item)
+    def test_edit_menu_get(self):
+        """Test the edit menu view with a logged-in user."""
+        request = self.factory.get('/menu/edit/')
+        request.user = self.user
+        response = views.edit_menu(request, **{'pk': self.menu1.pk})
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.menu1)
+        self.assertContains(response, self.menu1.expiration_date.date())
+        for item in self.all_items:
+            self.assertContains(response, item)
 
-    def test_edit_menu(self):
-        """Test logged-in access to the view profile page."""
-        self.client.login(username='Jamie Oliver', password='testpass')
-        response = self.client.get(reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk}))
-        # print(response.context['form']['season'].value())
-        self.assertTemplateUsed(response, 'menu/menu_edit.html')
-        self.assertEqual(response.context['form']['season'].value(), self.menu1.season)
-        self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
-        # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
-        # self.assertIn(response.context['form']['items'], 'Chocolate soda')
-        # print(response.context['form']['items'])
+    def test_edit_menu_post(self):
+        pass
+
+    # def test_edit_menu(self):
+    #     """Test logged-in access to the view profile page."""
+    #     self.client.login(username='Jamie Oliver', password='testpass')
+    #     response = self.client.get(reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk}))
+    #     # print(response.context['form']['season'].value())
+    #     self.assertTemplateUsed(response, 'menu/menu_edit.html')
+    #     self.assertEqual(response.context['form']['season'].value(), self.menu1.season)
+    #     self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
+    #     # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
+    #     # self.assertIn(response.context['form']['items'], 'Chocolate soda')
+    #     # print(response.context['form']['items'])
 
     def test_edit_menu_anonymous(self):
         """Test the edit menu view with an anonymous user."""

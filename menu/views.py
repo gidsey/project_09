@@ -60,9 +60,11 @@ def edit_menu(request, pk):
     """Edit an existing menu."""
     try:
         menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
+        items = models.Item.objects.all()
     except ObjectDoesNotExist:
         raise Http404
-    all_items = [[item.id, item.name] for item in models.Item.objects.all()]
+
+    all_items = [[item.id, item.name] for item in items]
     selected_items = [item.id for item in menu.items.all()]
     form = forms.MenuForm(initial={'items': selected_items}, instance=menu, choices=all_items)
 
