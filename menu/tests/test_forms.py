@@ -1,10 +1,12 @@
+import datetime
 from django.test import TestCase
 from menu.forms import MenuForm
-import datetime
+from menu.models import Item
+
 
 PLUS_TWO_WEEKS = datetime.date.today() + datetime.timedelta(days=14)
 MINUS_TWO_WEEKS = datetime.date.today() - datetime.timedelta(days=14)
-
+ALL_ITEMS = [[1, 'Chocolate soda'], [2, 'Strawberry soda'], [3, 'Blackberry soda']]
 
 class MenuFormTests(TestCase):
     """
@@ -17,40 +19,40 @@ class MenuFormTests(TestCase):
         """Form with valid data input"""
         form_data = ({
             'season': 'Spring/Summer',
-            'items': [2, 3],
+            'items': [1, 3],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertTrue(form.is_valid())
 
     def test_menu_form_invalid_season_missing(self):
         """Form with no season input"""
         form_data = ({
             'season': '',
-            'items': [2, 3],
+            'items': [1, 3],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_invalid_season_too_long(self):
         """Form with no season > chars."""
         form_data = ({
             'season': 'Spring/Summer Spring/Summer Spring/Summer Spring/Summer Spring/Summer',
-            'items': [2, 3],
+            'items': [1, 3],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_invalid_season_contains_brandname(self):
         """Form with no season > chars."""
         form_data = ({
             'season': 'Spring with Coca-Cola',
-            'items': [2, 3],
+            'items': [1, 3],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_invalid_no_items(self):
@@ -60,7 +62,7 @@ class MenuFormTests(TestCase):
             'items': [],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_invalid_one_items(self):
@@ -70,25 +72,25 @@ class MenuFormTests(TestCase):
             'items': [2, ],
             'expiration_date': PLUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_no_exp_date_set(self):
         """Form with no expiration date set."""
         form_data = ({
             'season': 'Spring/Summer',
-            'items': [2, 4],
+            'items': [1, 3],
             'expiration_date': ''
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())
 
     def test_menu_form_exp_date_in_past(self):
         """Form with  expiration date set in the past."""
         form_data = ({
             'season': 'Spring/Summer',
-            'items': [2, 4],
+            'items': [1, 3],
             'expiration_date': MINUS_TWO_WEEKS
         })
-        form = MenuForm(data=form_data)
+        form = MenuForm(data=form_data, choices=ALL_ITEMS)
         self.assertFalse(form.is_valid())

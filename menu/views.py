@@ -39,10 +39,10 @@ def item_detail(request, pk):
 @login_required
 def create_new_menu(request):
     """Create a new menu, chosing from existing items."""
-    """Create a new menu, chosing from existing items."""
-    form = forms.MenuForm()
+    all_items = [[item.id, item.name] for item in models.Item.objects.all()]
+    form = forms.MenuForm(choices=all_items)
     if request.method == "POST":
-        form = forms.MenuForm(data=request.POST)
+        form = forms.MenuForm(data=request.POST, choices=all_items)
         if form.is_valid():
             menu = form.save(commit=False)
             menu.created_date = timezone.now()
@@ -55,25 +55,19 @@ def create_new_menu(request):
     })
 
 
-class MyEditMenu(View):
+@login_required
+def edit_menu(request, pk):
+    """Edit an existing menu."""
+    try:
+        menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
+    except ObjectDoesNotExist:
+        raise Http404
+    all_items = [[item.id, item.name] for item in models.Item.objects.all()]
+    selected_items = [item.id for item in menu.items.all()]
+    form = forms.MenuForm(initial={'items': selected_items}, instance=menu, choices=all_items)
 
-    form_class = forms.MenuForm
-    # initial = {'items': selected_items}
-    # instance = menu
-    template_name = 'menu/menu_edit.html'
-
-    def get(self, request, *args, **kwargs):
-        try:
-            menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
-        except ObjectDoesNotExist:
-            raise Http404
-        selected_items = [item.id for item in menu.items.all()]
-
-        form = self.form_class(initial=self.initial, instance=self.instance)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, instance=self.instance)
+    if request.method == "POST":
+        form = forms.MenuForm(instance=menu, data=request.POST, choices=all_items)
         if form.is_valid():
             menu = form.save(commit=False)
             menu.created_date = timezone.now()
@@ -81,37 +75,10 @@ class MyEditMenu(View):
             menu.items.set(form.cleaned_data['items'])
             messages.success(request, "Menu updated successfully.")
             return redirect('menu:menu_detail', pk=menu.pk)
-        return render(request, 'menu/menu_edit.html', {
-            # 'menu': menu,
-            'form': form,
+    return render(request, 'menu/menu_edit.html', {
+        'menu': menu,
+        'form': form,
         })
-
-
-
-# @login_required
-# def edit_menu(request, pk):
-#     """Edit an existing menu."""
-#     try:
-#         menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
-#     except ObjectDoesNotExist:
-#         raise Http404
-#
-#     selected_items = [item.id for item in menu.items.all()]
-#     form = forms.MenuForm(initial={'items': selected_items}, instance=menu)
-#
-#     if request.method == "POST":
-#         form = forms.MenuForm(instance=menu, data=request.POST)
-#         if form.is_valid():
-#             menu = form.save(commit=False)
-#             menu.created_date = timezone.now()
-#             menu.save()
-#             menu.items.set(form.cleaned_data['items'])
-#             messages.success(request, "Menu updated successfully.")
-#             return redirect('menu:menu_detail', pk=menu.pk)
-#     return render(request, 'menu/menu_edit.html', {
-#         'menu': menu,
-#         'form': form,
-#         })
 
 
 @login_required

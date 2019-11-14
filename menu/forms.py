@@ -6,7 +6,7 @@ import datetime
 
 
 # Make a list of all items and their corresponding IDs
-ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
+# ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
 
 
 class MenuForm(forms.ModelForm):
@@ -16,9 +16,13 @@ class MenuForm(forms.ModelForm):
     """
 
     def __init__(self, *args, **kwargs):
+        choices = kwargs.pop('choices')
         super(MenuForm, self).__init__(*args, **kwargs)
         self.fields['season'].validators.append(validators.BrandCheckValidator)
         self.fields['expiration_date'].validators.append(validators.PastDateValidator)
+        self.fields['items'].choices = choices
+
+
 
     season = forms.CharField(
         required=True,
@@ -30,7 +34,7 @@ class MenuForm(forms.ModelForm):
     )
     items = forms.MultipleChoiceField(
         required=True,
-        choices=ITEMS,
+        # choices=ITEMS,
         label="Items (choose two or more from the list):",
         help_text='Hold down the Ctrl (windows) / Command (Mac) button to select multiple options.',
         error_messages={

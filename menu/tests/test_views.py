@@ -118,7 +118,7 @@ class MenuViewsTests(TestCase):
         self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
         # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
         # self.assertIn(response.context['form']['items'], 'Chocolate soda')
-        print(response.context['form']['items'])
+        # print(response.context['form']['items'])
 
     def test_edit_menu_anonymous(self):
         """Test the edit menu view with an anonymous user."""

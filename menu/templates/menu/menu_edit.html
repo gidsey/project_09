@@ -12,4 +12,14 @@
         <hr>
         <a href="{% url 'menu:menu_delete' pk=menu.pk %}" class="btn btn-danger">Delete</a>
     </div>
+
+
+{#     <div class="mt-5">#}
+{#                    <h1>Change menu</h1>#}
+{#                    <form method="POST" class="menu-form">{% csrf_token %}#}
+{#                        {{ form.as_p }}#}
+{#                        <button type="submit" class="save btn btn-default">Save</button>#}
+{#                    </form>#}
+{#                </div>#}
+
 {% endblock %}
