@@ -18,17 +18,19 @@ class MenuViewsTests(TestCase):
 
         #  Every test needs access to the request factory.
         self.factory = RequestFactory()
+
         #  Create a user
         self.user = User.objects.create_user(
             username='Jamie Oliver',
             email='test@test.com',
             password='testpass')
         self.anonymous_user = AnonymousUser()
+
         #  Create 3x ingredients
         self.ingredient1 = Ingredient.objects.create(name='Mango')
         self.ingredient2 = Ingredient.objects.create(name='Banana')
         self.ingredient3 = Ingredient.objects.create(name='Honey')
-        #  Create two sets of ingredients
+        #  Create two QuerySets of ingredients
         self.all_ingredients = Ingredient.objects.all()
         self.two_ingredients = Ingredient.objects.filter(
             Q(name__iexact='Banana') | Q(name__iexact='Honey')).order_by('name')
@@ -49,13 +51,13 @@ class MenuViewsTests(TestCase):
             standard=False,
         )
         self.item2.ingredients.set(self.two_ingredients)
-        self.all_items = Item.objects.all()
         #  Create a menu
         self.menu1 = Menu.objects.create(
             season='Autumn 2019',
             created_date=timezone.now(),
             expiration_date=timezone.now() + datetime.timedelta(days=14)
         )
+        self.all_items = Item.objects.all().order_by('name')
         self.menu1.items.set(self.all_items)
 
         self.client = Client(enforce_csrf_checks=False)

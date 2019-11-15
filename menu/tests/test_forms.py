@@ -1,12 +1,12 @@
 import datetime
 from django.test import TestCase
 from menu.forms import MenuForm
-from menu.models import Item
 
 
 PLUS_TWO_WEEKS = datetime.date.today() + datetime.timedelta(days=14)
 MINUS_TWO_WEEKS = datetime.date.today() - datetime.timedelta(days=14)
 ALL_ITEMS = [[1, 'Chocolate soda'], [2, 'Strawberry soda'], [3, 'Blackberry soda']]
+
 
 class MenuFormTests(TestCase):
     """
