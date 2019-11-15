@@ -2,13 +2,6 @@ from django import forms
 from . import models
 from . import validators
 
-import datetime
-
-
-# Make a list of all items and their corresponding IDs
-# ITEMS = [[item.id, item.name] for item in models.Item.objects.all()]
-
-
 class MenuForm(forms.ModelForm):
     """
     Form used to create new menus
