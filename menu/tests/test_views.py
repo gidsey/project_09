@@ -80,6 +80,10 @@ class MenuViewsTests(TestCase):
             'expiration_date': PLUS_TWO_WEEKS,
         }
 
+        self.menu_form_post_data_delete = {
+            'season': self.menu1,
+            'expiration_date': self.menu1.expiration_date.date(),
+        }
 
     def test_menu_list_view(self):
         """Test the index page view"""
@@ -135,70 +139,40 @@ class MenuViewsTests(TestCase):
             self.assertContains(response, item)
 
     def test_edit_menu_post_fail(self):
-        """Test the resposnse when the edit menu form is correctly posted."""
+        """Test the resposnse when the edit menu form is posted with an invalid date."""
         form_addr = reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk})
-
-        response = self.client.post(
-                                    form_addr,
+        response = self.client.post(form_addr,
                                     self.menu_form_post_data_fail,
-                                    follow=True
-                                    )
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Enter a vaild date")
 
     def test_edit_menu_post_pass(self):
         """Test the resposnse when the edit menu form is correctly posted."""
         form_addr = reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk})
-
-        response = self.client.post(
-                                    form_addr,
+        response = self.client.post(form_addr,
                                     self.menu_form_post_data_pass,
-                                    follow=True
-                                    )
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Menu updated successfully.")
 
     def test_create_new_menu_post_fail(self):
-        """Test the resposnse when the edit menu form is correctly posted."""
+        """Test the resposnse when the new menu form is posted with on;y one item."""
         form_addr = reverse('menu:menu_new')
-
-        response = self.client.post(
-            form_addr,
-            self.menu_form_post_data_fail_2,
-            follow=True
-        )
+        response = self.client.post(form_addr,
+                                    self.menu_form_post_data_fail_2,
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "You must pick at least two items.")
 
     def test_create_new_menu_post_pass(self):
-        """Test the resposnse when the edit menu form is correctly posted."""
+        """Test the resposnse when the new menu form is correctly posted."""
         form_addr = reverse('menu:menu_new')
-
-        response = self.client.post(
-                                    form_addr,
+        response = self.client.post(form_addr,
                                     self.menu_form_post_data_pass,
-                                    follow=True
-                                    )
+                                    follow=True)
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Menu added successfully.")
-
-
-
-
-
-
-
-    # def test_edit_menu(self):
-    #     """Test logged-in access to the view profile page."""
-    #     self.client.login(username='Jamie Oliver', password='testpass')
-    #     response = self.client.get(reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk}))
-    #     # print(response.context['form']['season'].value())
-    #     self.assertTemplateUsed(response, 'menu/menu_edit.html')
-    #     self.assertEqual(response.context['form']['season'].value(), self.menu1.season)
-    #     self.assertEqual(response.context['form']['expiration_date'].value(), self.menu1.expiration_date.date())
-    #     # self.assertEqual(len(response.context['form']['items']), len(self.all_items))
-    #     # self.assertIn(response.context['form']['items'], 'Chocolate soda')
-    #     # print(response.context['form']['items'])
 
     def test_edit_menu_anonymous(self):
         """Test the edit menu view with an anonymous user."""
@@ -206,6 +180,18 @@ class MenuViewsTests(TestCase):
         request.user = self.anonymous_user
         response = views.edit_menu(request, **{'pk': self.menu1.pk})
         self.assertNotEqual(response.status_code, 200)
+
+    def test_delete_menu_post_pass(self):
+        """Test the resposnse when the delete menu form is correctly posted."""
+        form_addr = reverse('menu:menu_delete', kwargs={'pk': self.menu1.pk})
+
+        response = self.client.post(
+                                    form_addr,
+                                    self.menu_form_post_data_delete,
+                                    follow=True
+                                    )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Menu deleted successfully.")
 
 
 
