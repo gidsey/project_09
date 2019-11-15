@@ -38,7 +38,7 @@ def item_detail(request, pk):
 @login_required
 def create_new_menu(request):
     """Create a new menu, chosing from existing items."""
-    all_items = [[item.id, item.name] for item in models.Item.objects.all()]
+    all_items = [[item.id, item.name] for item in models.Item.objects.all().order_by('created_date')]
     form = forms.MenuForm(choices=all_items)
     if request.method == "POST":
         form = forms.MenuForm(data=request.POST, choices=all_items)
@@ -59,7 +59,7 @@ def edit_menu(request, pk):
     """Edit an existing menu."""
     try:
         menu = models.Menu.objects.prefetch_related('items').get(pk=pk)
-        items = models.Item.objects.all()
+        items = models.Item.objects.all().order_by('created_date')
     except ObjectDoesNotExist:
         raise Http404
 
