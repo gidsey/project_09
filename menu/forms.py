@@ -22,8 +22,6 @@ class MenuForm(forms.ModelForm):
         self.fields['expiration_date'].validators.append(validators.PastDateValidator)
         self.fields['items'].choices = choices
 
-
-
     season = forms.CharField(
         required=True,
         label='Season (no brand names please):',

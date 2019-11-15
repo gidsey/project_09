@@ -9,6 +9,9 @@ from menu import views
 from django.urls import reverse
 from django.test import Client
 
+PLUS_TWO_WEEKS = datetime.date.today() + datetime.timedelta(days=14)
+
+
 class MenuViewsTests(TestCase):
     """Test the views."""
     def setUp(self):
@@ -54,6 +57,23 @@ class MenuViewsTests(TestCase):
             expiration_date=timezone.now() + datetime.timedelta(days=14)
         )
         self.menu1.items.set(self.all_items)
+
+        self.client = Client(enforce_csrf_checks=False)
+        self.client.login(username='Jamie Oliver', password='testpass')
+
+        #  define form fields/values
+        self.menu_form_post_data_fail = {
+            'season': 'All-new seasonAll-new seasonAll-new season',
+            'items': '[1, 2]',
+            'expiration_date': PLUS_TWO_WEEKS,
+        }
+
+        self.menu_form_post_data_pass = {
+            'season': 'All-new season',
+            'items': ['1', '2'],
+            'expiration_date': PLUS_TWO_WEEKS,
+        }
+
 
     def test_menu_list_view(self):
         """Test the index page view"""
@@ -108,8 +128,29 @@ class MenuViewsTests(TestCase):
         for item in self.all_items:
             self.assertContains(response, item)
 
-    def test_edit_menu_post(self):
-        pass
+    def test_edit_menu_post_fail(self):
+        """Test the resposnse when the edit menu form is correctly posted."""
+        form_addr = reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk})
+
+        response = self.client.post(
+                                    form_addr,
+                                    self.menu_form_post_data_fail,
+                                    follow=True
+                                    )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Ensure this value has at most 20 characters (it has 42).")
+
+    def test_edit_menu_post_pass(self):
+        """Test the resposnse when the edit menu form is correctly posted."""
+        form_addr = reverse('menu:menu_edit', kwargs={'pk': self.menu1.pk})
+
+        response = self.client.post(
+                                    form_addr,
+                                    self.menu_form_post_data_pass,
+                                    follow=True
+                                    )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Menu updated successfully.")
 
     # def test_edit_menu(self):
     #     """Test logged-in access to the view profile page."""
