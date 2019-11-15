@@ -63,8 +63,14 @@ class MenuViewsTests(TestCase):
 
         #  define form fields/values
         self.menu_form_post_data_fail = {
-            'season': 'All-new seasonAll-new seasonAll-new season',
-            'items': '[1, 2]',
+            'season': 'All-new season',
+            'items': ['1', '2'],
+            'expiration_date': 'November 12, 2022',
+        }
+
+        self.menu_form_post_data_fail_2 = {
+            'season': 'All-new season',
+            'items': ['1'],
             'expiration_date': PLUS_TWO_WEEKS,
         }
 
@@ -138,7 +144,7 @@ class MenuViewsTests(TestCase):
                                     follow=True
                                     )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Ensure this value has at most 20 characters (it has 42).")
+        self.assertContains(response, "Enter a vaild date")
 
     def test_edit_menu_post_pass(self):
         """Test the resposnse when the edit menu form is correctly posted."""
@@ -151,6 +157,36 @@ class MenuViewsTests(TestCase):
                                     )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "Menu updated successfully.")
+
+    def test_create_new_menu_post_fail(self):
+        """Test the resposnse when the edit menu form is correctly posted."""
+        form_addr = reverse('menu:menu_new')
+
+        response = self.client.post(
+            form_addr,
+            self.menu_form_post_data_fail_2,
+            follow=True
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "You must pick at least two items.")
+
+    def test_create_new_menu_post_pass(self):
+        """Test the resposnse when the edit menu form is correctly posted."""
+        form_addr = reverse('menu:menu_new')
+
+        response = self.client.post(
+                                    form_addr,
+                                    self.menu_form_post_data_pass,
+                                    follow=True
+                                    )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Menu added successfully.")
+
+
+
+
+
+
 
     # def test_edit_menu(self):
     #     """Test logged-in access to the view profile page."""
