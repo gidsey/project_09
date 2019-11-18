@@ -30,7 +30,7 @@ Improve the efficiency of an existing Django project.
 * Favicon added
 
 #### Testing
-* Unit tests added for Models, Forms Views
+* Unit tests added for Models, Forms and Views
 * 95% coverage achieved
  
 ## Running Locally
