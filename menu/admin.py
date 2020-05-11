@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import Menu, Item, Ingredient
 
-admin.site.site_header = 'Soda Fountian Admin Aresa'
+admin.site.site_header = 'Soda Fountain Admin Area'
 
 
 class MenuAdmin(admin.ModelAdmin):
