@@ -4,6 +4,8 @@
 
 Improve the efficiency of an existing Django project.
 
+![application screenshots](assets/images/project_9_screenshots.jpg)
+
 ## Changes
 
 #### Functional
